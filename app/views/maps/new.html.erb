@@ -107,6 +107,18 @@
           mapTypeId: 'roadmap'
         });
 
+        map.addListener('click', function(e) {
+          placeMarkerAndPanTo(e.latLng, map);
+        });
+
+        function placeMarkerAndPanTo(latLng, map) {
+          var marker = new google.maps.Marker({
+            position: latLng,
+            map: map
+          });
+          map.panTo(latLng);
+        }
+
         // Create the search box and link it to the UI element.
         var input = document.getElementById('pac-input');
         var searchBox = new google.maps.places.SearchBox(input);
