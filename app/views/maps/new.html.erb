@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <% content_for :javascript_includes do %>
+    <%= javascript_include_tag "application" %>
+    <% end %>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmmnDCErIvgWlm30ynR42RILU5fXfbUYw&callback=initMap"> </script>
+  </body>
