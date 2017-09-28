@@ -97,12 +97,8 @@
       // feature. People can enter geographical searches. The search box will return a
       // pick list containing a mix of places and predicted search terms.
 
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
       function initAutocomplete() {
-        var map = new google.maps.Map(document.getElementById('map'), {
+        let map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -33.8688, lng: 151.2195},
           zoom: 13,
           mapTypeId: 'roadmap'
@@ -112,17 +108,21 @@
           placeMarkerAndPanTo(e.latLng, map);
         });
 
+        let markerData = []
+
         function placeMarkerAndPanTo(latLng, map) {
-          var marker = new google.maps.Marker({
+          let marker = new google.maps.Marker({
             position: latLng,
             map: map
           });
           map.panTo(latLng);
+          markerData.push(latLng)
+          console.log(markerData);
         }
 
         // Create the search box and link it to the UI element.
-        var input = document.getElementById('pac-input');
-        var searchBox = new google.maps.places.SearchBox(input);
+        let input = document.getElementById('pac-input');
+        let searchBox = new google.maps.places.SearchBox(input);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
         // Bias the SearchBox results towards current map's viewport.
@@ -130,11 +130,11 @@
           searchBox.setBounds(map.getBounds());
         });
 
-        var markers = [];
+        let markers = [];
         // Listen for the event fired when the user selects a prediction and retrieve
         // more details for that place.
         searchBox.addListener('places_changed', function() {
-          var places = searchBox.getPlaces();
+          let places = searchBox.getPlaces();
 
           if (places.length == 0) {
             return;
@@ -147,13 +147,13 @@
           markers = [];
 
           // For each place, get the icon, name and location.
-          var bounds = new google.maps.LatLngBounds();
+          let bounds = new google.maps.LatLngBounds();
           places.forEach(function(place) {
             if (!place.geometry) {
               console.log("Returned place contains no geometry");
               return;
             }
-            var icon = {
+            let icon = {
               url: place.icon,
               size: new google.maps.Size(71, 71),
               origin: new google.maps.Point(0, 0),
@@ -168,7 +168,6 @@
               title: place.name,
               position: place.geometry.location
             }));
-
             if (place.geometry.viewport) {
               // Only geocodes have viewport.
               bounds.union(place.geometry.viewport);
