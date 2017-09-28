@@ -18,6 +18,10 @@ function initAutocomplete() {
          searchBox.setBounds(map.getBounds());
        });
 
+       map.addListener('click', function(e) {
+        placeMarkerAndPanTo(e.latLng, map);
+      });
+
        let markerData = []
        function placeMarkerAndPanTo(latLng, map) {
          let marker = new google.maps.Marker({
@@ -77,5 +81,5 @@ function initAutocomplete() {
          });
          map.fitBounds(bounds);
        });
-       google.maps.event.addDomListener(window, "load", this.initialize);
-     }
+     google.maps.event.addDomListener(window, "load", this.initialize);
+}
