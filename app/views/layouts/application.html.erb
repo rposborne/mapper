@@ -2,10 +2,14 @@
 <html>
   <head>
     <title>MapperSpot</title>
+
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmmnDCErIvgWlm30ynR42RILU5fXfbUYw&libraries=places"></script>
+
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', defer: 'defer' %>
+    <%= javascript_include_tag params[:controller], defer: 'defer' %>
     <%= yield :javascript_includes %>
 
   </head>
