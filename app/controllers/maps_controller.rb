@@ -13,11 +13,16 @@ class MapsController < ApplicationController
 
   def create
     @map = Map.new(map_params)
+
+    respond_to do |format|
       if @map.save
-        redirect_to @map
+        format.html { redirect_to @map, notice: 'Map was successfully saved'}
+        format.json { render json: @map }
       else
-        render 'new'
+        format.html { render 'new' }
+        format.json { render json: @map.errors, status: :unproccessable_entity }
       end
+    end
   end
 
   def edit
