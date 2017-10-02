@@ -6,8 +6,13 @@
   </head>
   <body id="map-new-page">
     <h1>Where Would You Go?</h1>
-
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <form>
+      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    </form>
     <div id="map"></div>
+
+    <%# form_for @marker do |f| %>
+      <%# f.submit "Save Map" %>
+    <%# end %>
   </body>
 </html>
