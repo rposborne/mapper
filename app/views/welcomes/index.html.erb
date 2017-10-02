@@ -5,18 +5,12 @@
     <title></title>
   </head>
   <body>
-    <header class="navbar">
-        <div class="navbar-container">
-          <span><%=link_to "Login", sessions_index_path%></span>
-          <span><%=link_to "Explore", new_map_path %></span>
-          <span><%=link_to "Join", sessions_new_path%></span>
-        </div>
-    </header>
     <div class="welcome-message">
       <h1>Welcome, Mapper</h1>
       <span> Where should we go?</span>
       <span class="globe">🌏</span>
     </div>
+    <p><%=link_to "EXPLORE", new_map_path %></p>
 
     <%= javascript_include_tag "application" %>
   </body>

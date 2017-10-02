@@ -43,6 +43,14 @@ function initAutocomplete() {
            return;
          }
 
+        function saveMarkersToDB(markerData) {
+          return fetch("/maps", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ markerData: markerData})
+          }).then(r => console.log(r))
+        }
+
          // Clear out the old markers.
          markers.forEach(function(marker) {
            marker.setMap(null);
