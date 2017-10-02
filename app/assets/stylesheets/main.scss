@@ -1,0 +1,13 @@
+@import 'styles/users';
+@import 'styles/map';
+@import 'styles/welcomes';
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab');
+@import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
+
+
+html {
+  background-color: #fff;
+  color: rgb(53,74,93);
+  font-family: Roboto Slab;
+  // border: 5px solid rgba(53,74,93,0.9);
+}

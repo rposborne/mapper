@@ -5,9 +5,11 @@
     <title></title>
   </head>
   <body>
-
-    <h1>Welcome, Mapper</h1>
-    <span> Where should we go?</span>
+    <div class="welcome-message">
+      <h1>Welcome, Mapper</h1>
+      <span> Where should we go?</span>
+      <span class="globe">🌏</span>
+    </div>
     <p><%=link_to "EXPLORE", new_map_path %></p>
 
     <%= javascript_include_tag "application" %>
