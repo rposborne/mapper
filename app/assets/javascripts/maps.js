@@ -28,7 +28,6 @@
       this.addEventListeners();
     };
 
-
     this.addEventListeners = function() {
       let self = this;
       google.maps.event.addListener(this.map, "click", function(event) {
@@ -80,13 +79,13 @@
         document.getElementById('form').setAttribute("style", "display: block")
       })
       document.getElementById('button').addEventListener('click', function() {
-        console.log("Working?");
         self.messageWindow.open(self.map, marker)
+        self.infowindow.close(self.map, marker);
         document.getElementById('message').setAttribute("style", "display: block")
       })
     };
 
-    this.getCoordinates = function() {
+    this.serializeMarkers = function() {
       return this.markers.map(function(marker) {
         return {
           lat: marker.position.lat(),
@@ -102,10 +101,10 @@
       this.markers.length = 0;
     };
 
-    this.restoreCoordinates = function(coordinates) {
+    this.restoreMarkers = function(markers) {
       let self = this;
-      coordinates.forEach(function(coordinate) {
-        self.addMarker(coordinate);
+      markers.forEach(function(marker) {
+        self.addMarker(marker);
       });
     };
 
@@ -114,7 +113,7 @@
       this.deleteAllMarkers();
       this.map.setCenter(serialized.center);
       this.map.setZoom(serialized.zoom);
-      this.restoreCoordinates(serialized.coordinates);
+      this.restoreMarkers(serialized.markers);
     };
 
     this.serialize = function() {
@@ -124,7 +123,7 @@
           lng: this.map.getCenter().lng()
         },
         zoom: this.map.getZoom(),
-        coordinates: this.getCoordinates()
+        markers: this.serializeMarkers()
       };
     };
   };
@@ -132,22 +131,22 @@
 
 (function() {
   window.mapDefaults = {
-    coordinates: [{ lat: 35.65489, lng: 139.7226 }],
+    markers: [{ lat: 35.65489, lng: 139.7226 }],
     node: document.getElementById("map"),
     inputNode: document.getElementById("pac-input")
   };
 })();
 
 let mapSpot = new MapSpot(mapDefaults.node, mapDefaults.inputNode, {
-  center: mapDefaults.coordinates[0]
+  center: mapDefaults.markers[0]
 });
 mapSpot.initMap();
 
-mapSpot.restoreCoordinates(mapDefaults.coordinates);
+mapSpot.restoreMarkers(mapDefaults.markers);
 mapSpot.addMarker({ lat: 35.654376, lng: 139.722903 });
 
 console.log("Coordinates");
-console.table(mapSpot.getCoordinates());
+console.table(mapSpot.serializeMarkers());
 
 console.log("Markers");
 console.log(mapSpot.markers);
