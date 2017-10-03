@@ -11,6 +11,16 @@
     </form>
     <div id="map"></div>
 
+    <div id="form">
+      <table>
+        <tr><td>Name:</td> <td><input type='text' id='name'/> </td></tr>
+        <tr><td>Address:</td> <td><input type='text' id='address'/> </td> </tr>
+        <tr><td>Tell Us More:</td> <td><input type='text' id='name'/> </td></tr>
+        <tr><td></td><td><input type='button' value='Save' onclick='saveData()'/></td></tr>
+      </table>
+    </div>
+    <div id="message">Location saved</div>
+
     <%# form_for @marker do |f| %>
       <%# f.submit "Save Map" %>
     <%# end %>

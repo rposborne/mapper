@@ -13,6 +13,9 @@
     this.markers = [];
     this.map = new google.maps.Map(this.node);
     this.searchBox = new google.maps.places.SearchBox(this.inputNode);
+    this.infowindow = new google.maps.InfoWindow({
+      content: document.getElementById('form')
+    });
 
     this.initMap = function() {
       this.map.setCenter(this.options["center"] || DEFAULT_CENTER);
@@ -21,11 +24,19 @@
       this.addEventListeners();
     };
 
+
+
+
+
     this.addEventListeners = function() {
       let self = this;
       google.maps.event.addListener(this.map, "click", function(event) {
         self.addMarker(event.latLng);
       });
+
+
+
+
 
       self.searchBox.addListener("places_changed", function() {
         let places = self.searchBox.getPlaces();
@@ -41,40 +52,8 @@
             console.log("Returned place contains no geometry");
             return;
           }
-          let icon = {
-            url: place.icon,
-            size: new google.maps.Size(71, 71),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(17, 34),
-            scaledSize: new google.maps.Size(25, 25)
-          };
-
-          // function saveMarkersToDB(markerData) {
-          //   return fetch("/maps", {
-          //     method: "POST",
-          //     headers: { "Content-Type": "application/json" },
-          //     body: JSON.stringify({ markerData: markerData})
-          //   }).then(r => console.log(r))
-          // }
-
-          // Clear out the old markers.
-          // markers.forEach(function(marker) {
-          //   marker.setMap(null);
-          // });
-          // markers = [];
-
           // Create a marker for each place.
           self.addMarker(place.geometry.location);
-
-
-          // self.markers.push(
-          //   new google.maps.Marker({
-          //     map: map,
-          //     icon: icon,
-          //     title: place.name,
-          //     position: place.geometry.location
-          //   })
-          // );
           console.log(self.markers)
 
           if (place.geometry.viewport) {
@@ -92,32 +71,25 @@
         self.searchBox.setBounds(self.map.getBounds());
       });
 
-      self.map.addListener("click", function(e) {
-        placeMarkerAndPanTo(e.latLng, self.map);
+    };
+
+
+
+    this.addMarker = function(latLng) {
+      let self = this;
+      let marker = new google.maps.Marker({
+        position: latLng,
+        draggable: true,
+        map: this.map
       });
+      this.map.panTo(latLng);
+      this.markers.push(marker);
+      console.log(marker.position);
 
-      function placeMarkerAndPanTo(latLng, map) {
-        let marker = new google.maps.Marker({
-          position: latLng,
-          map: map
-        });
-        self.map.panTo(latLng);
-      }
+      google.maps.event.addListener(marker, 'click', function() {
+        self.infowindow.open(self.map, marker);
+      })
     };
-
-
-
-    this.addMarker = function(coordinates) {
-      this.markers.push(
-        new google.maps.Marker({
-          position: coordinates,
-          draggable: true,
-          map: this.map
-        })
-      );
-    };
-
-
 
 
 
