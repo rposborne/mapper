@@ -31,6 +31,7 @@
     this.addEventListeners = function() {
       let self = this;
       google.maps.event.addListener(this.map, "click", function(event) {
+        debugger
         self.addMarker(event.latLng);
       });
 
@@ -46,8 +47,7 @@
             return;
           }
           // Create a marker for each place.
-          self.addMarker(place.geometry.location);
-          console.log(self.markers)
+          self.addMarker(place.geometry.location, place);
 
           if (place.geometry.viewport) {
             // Only geocodes have viewport.
@@ -65,8 +65,15 @@
 
       document.getElementById('marker-form').addEventListener('submit', function(e) {
         e.preventDefault();
+
         self.openedMarker.name = this.name.value;
+        self.openedMarker.address = this.address.value;
+        self.openedMarker.tell = this.tell.value;
+
         this.name.value = ""
+        this.address.value = ""
+        this.tell.value = ""
+
         self.infowindow.close(self.map, self.openedMarker);
         self.messageWindow.open(self.map, self.openedMarker)
         setInterval(function() {
@@ -77,7 +84,7 @@
       })
     };
 
-    this.addMarker = function(latLng) {
+    this.addMarker = function(latLng, place) {
       let self = this;
       let marker = new google.maps.Marker({
         position: latLng,
@@ -85,6 +92,14 @@
         map: this.map
       });
       marker.name = ""
+      marker.address = ""
+      marker.tell = ""
+
+      if (place !== undefined) {
+        marker.name = place.name;
+        marker.address = place.formatted_address;
+      }
+
       this.map.panTo(latLng);
       this.markers.push(marker);
 
@@ -94,6 +109,8 @@
         document.getElementById('marker-form-wrapper').setAttribute("style", "display: block")
         let form = document.getElementById('marker-form');
         form.name.value = marker.name;
+        form.address.value = marker.address;
+        form.tell.value = marker.tell;
       })
     };
 
@@ -128,12 +145,12 @@
       this.restoreMarkers(serialized.markers);
     };
 
-    this.save will call serialize()
-    let button = document.getElementById("save-button");
-    button.addEventListener("click", function() {
-      console.log('it work', window.mapSpot.markers);
-      this.save()
-    })
+    // this.save will call serialize()
+    //   let button = document.getElementById("save-button");
+    //   button.addEventListener("click", function() {
+    //   console.log('it work', window.mapSpot.markers);
+    //   this.save()
+    // })
 
     this.save = function() {
       let self = this;
