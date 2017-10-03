@@ -1,4 +1,5 @@
 class MapsController < ApplicationController
+
   def index
     @maps = Map.all
   end
@@ -38,6 +39,7 @@ class MapsController < ApplicationController
     def map_params
       params.require(:map).permit(:title, :description)
       # will need marker permits here as well
+      params.fetch(:map)
     end
 
 end

@@ -116,6 +116,26 @@
       this.restoreMarkers(serialized.markers);
     };
 
+    //this.save will call serialize()
+    let button = document.getElementById("save-button");
+    button.addEventListener("click", function() {
+      console.log('it work', window.mapSpot.markers);
+      this.save()
+    })
+
+    this.save = function() {
+      fetch('/maps', {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          'Accept': 'application/json',
+          'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+        },
+        body: JSON.stringify(window.mapSpot.markers[0].position)
+      })
+      .then(data => console.log(data))
+    }
+
     this.serialize = function() {
       return {
         center: {
@@ -129,6 +149,9 @@
   };
 })();
 
+
+
+
 (function() {
   window.mapDefaults = {
     markers: [{ lat: 35.65489, lng: 139.7226 }],
@@ -138,7 +161,7 @@
 })();
 
 if (document.getElementById('map-page') !== null) {
-  let mapSpot = new MapSpot(mapDefaults.node, mapDefaults.inputNode, {
+  window.mapSpot = new MapSpot(mapDefaults.node, mapDefaults.inputNode, {
     center: mapDefaults.markers[0]
   });
   mapSpot.initMap();
