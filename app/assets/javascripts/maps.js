@@ -16,6 +16,10 @@
     this.infowindow = new google.maps.InfoWindow({
       content: document.getElementById('form')
     });
+    this.messageWindow = new google.maps.InfoWindow({
+      content: document.getElementById('message')
+    });
+
 
     this.initMap = function() {
       this.map.setCenter(this.options["center"] || DEFAULT_CENTER);
@@ -25,31 +29,21 @@
     };
 
 
-
-
-
     this.addEventListeners = function() {
       let self = this;
       google.maps.event.addListener(this.map, "click", function(event) {
         self.addMarker(event.latLng);
       });
 
-
-
-
-
       self.searchBox.addListener("places_changed", function() {
         let places = self.searchBox.getPlaces();
-
         if (places.length == 0) {
           return;
         }
 
-
         let bounds = new google.maps.LatLngBounds();
         places.forEach(function(place) {
           if (!place.geometry) {
-            console.log("Returned place contains no geometry");
             return;
           }
           // Create a marker for each place.
@@ -66,14 +60,10 @@
         self.map.fitBounds(bounds);
       });
 
-
       self.map.addListener("bounds_changed", function() {
         self.searchBox.setBounds(self.map.getBounds());
       });
-
     };
-
-
 
     this.addMarker = function(latLng) {
       let self = this;
@@ -84,16 +74,17 @@
       });
       this.map.panTo(latLng);
       this.markers.push(marker);
-      console.log(marker.position);
 
       google.maps.event.addListener(marker, 'click', function() {
         self.infowindow.open(self.map, marker);
+        document.getElementById('form').setAttribute("style", "display: block")
+      })
+      document.getElementById('button').addEventListener('click', function() {
+        console.log("Working?");
+        self.messageWindow.open(self.map, marker)
+        document.getElementById('message').setAttribute("style", "display: block")
       })
     };
-
-
-
-
 
     this.getCoordinates = function() {
       return this.markers.map(function(marker) {
