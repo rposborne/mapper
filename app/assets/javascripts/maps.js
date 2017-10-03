@@ -28,7 +28,6 @@
       this.addEventListeners();
     };
 
-
     this.addEventListeners = function() {
       let self = this;
       google.maps.event.addListener(this.map, "click", function(event) {
