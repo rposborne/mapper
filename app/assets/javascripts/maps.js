@@ -137,28 +137,30 @@
   };
 })();
 
-let mapSpot = new MapSpot(mapDefaults.node, mapDefaults.inputNode, {
-  center: mapDefaults.markers[0]
-});
-mapSpot.initMap();
+if (document.getElementById('map-page') !== null) {
+  let mapSpot = new MapSpot(mapDefaults.node, mapDefaults.inputNode, {
+    center: mapDefaults.markers[0]
+  });
+  mapSpot.initMap();
 
-mapSpot.restoreMarkers(mapDefaults.markers);
-mapSpot.addMarker({ lat: 35.654376, lng: 139.722903 });
+  mapSpot.restoreMarkers(mapDefaults.markers);
+  mapSpot.addMarker({ lat: 35.654376, lng: 139.722903 });
 
-console.log("Coordinates");
-console.table(mapSpot.serializeMarkers());
+  console.log("Coordinates");
+  console.table(mapSpot.serializeMarkers());
 
-console.log("Markers");
-console.log(mapSpot.markers);
+  console.log("Markers");
+  console.log(mapSpot.markers);
 
-// Demo serialize and restore
-setTimeout(function() {
-  mapSpot.map.setZoom(16);
-}, 1000);
-serialized = mapSpot.serialize();
-setTimeout(function() {
-  mapSpot.deleteAllMarkers();
-}, 2000);
-setTimeout(function() {
-  mapSpot.restoreMap(serialized);
-}, 3000);
+  // Demo serialize and restore
+  setTimeout(function() {
+    mapSpot.map.setZoom(16);
+  }, 1000);
+  serialized = mapSpot.serialize();
+  setTimeout(function() {
+    mapSpot.deleteAllMarkers();
+  }, 2000);
+  setTimeout(function() {
+    mapSpot.restoreMap(serialized);
+  }, 3000);
+}
