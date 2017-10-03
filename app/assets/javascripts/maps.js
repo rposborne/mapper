@@ -20,6 +20,7 @@
       content: document.getElementById('message')
     });
 
+
     this.initMap = function() {
       this.map.setCenter(this.options["center"] || DEFAULT_CENTER);
       this.map.setZoom(this.options["zoom"] || DEFAULT_ZOOM);
@@ -43,7 +44,6 @@
         let bounds = new google.maps.LatLngBounds();
         places.forEach(function(place) {
           if (!place.geometry) {
-            console.log("Returned place contains no geometry");
             return;
           }
           // Create a marker for each place.
@@ -74,11 +74,15 @@
       });
       this.map.panTo(latLng);
       this.markers.push(marker);
-      console.log(marker.position);
 
       google.maps.event.addListener(marker, 'click', function() {
         self.infowindow.open(self.map, marker);
         document.getElementById('form').setAttribute("style", "display: block")
+      })
+      document.getElementById('button').addEventListener('click', function() {
+        console.log("Working?");
+        self.messageWindow.open(self.map, marker)
+        document.getElementById('message').setAttribute("style", "display: block")
       })
     };
 
