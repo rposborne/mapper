@@ -2,17 +2,13 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.navbar {
+.navbar-text {
   margin: 20px;
   padding: 50px;
-
-}
-
-.navbar-container {
   display: flex;
   justify-content: space-around;
 
-  a {
+    a {
     font-size: 20px;
     text-decoration: none;
     padding: 0;
@@ -24,6 +20,18 @@
       // background-color: rgba(53,74,93,0.9);
     }
   }
+}
+
+.user-logged-in {
+  margin: 10px;
+
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-around;
+
+
 }
 
 
