@@ -1,2 +1,23 @@
-<h1>Maps#index</h1>
-<p>Find me in app/views/maps/index.html.erb</p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Check Out Your Maps!</title>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th id="table-headers">Map Name</th>
+      </thead>
+      <tbody>
+        <% @maps.each do |map| %>
+          <tr class="map-body">
+            <td><%= map.title %></td>
+            <td class='button'><%= link_to 'Edit', edit_map_path(map) %></td>
+          </tr>
+          <% end %>
+      </tbody>
+    </table>
+  </body>
+</html>

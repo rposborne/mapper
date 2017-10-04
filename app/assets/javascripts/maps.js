@@ -34,6 +34,10 @@
 
         self.addMarker(event.latLng);
       });
+      document.getElementById('save-map-form').addEventListener('submit', function(e) {
+        e.preventDefault()
+        self.save()
+      })
 
       self.searchBox.addListener("places_changed", function() {
         let places = self.searchBox.getPlaces();
@@ -140,13 +144,42 @@
       });
     };
 
-    this.restoreMap = function(serialized) {
+    this.restoreMap = function(data) {
       let self = this;
+
       this.deleteAllMarkers();
-      this.map.setCenter(serialized.center);
-      this.map.setZoom(serialized.zoom);
-      this.restoreMarkers(serialized.markers);
+      this.map.setCenter(data.center);
+      this.map.setZoom(data.zoom);
+      this.restoreMarkers(data.markers);
     };
+
+    this.getMapIdFromLocation = function() {
+      return document.location.pathname.split("/")[2];
+    }
+
+
+    this.getMap = function() {
+      let self = this;
+      let mapId = this.getMapIdFromLocation();
+      fetch(`/maps/${mapId}`, {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          'Accept': 'application/json',
+          'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+        },
+        // body: JSON.stringify({ map: map })
+      })
+      .then(function(res) {
+        if (res.ok) {
+          return res.json()
+        }
+      })
+      .then(function(json) {
+        self.restoreMarkers(json.markers)
+         console.log(json)
+       })
+    }
 
     this.save = function() {
       let self = this;
@@ -176,11 +209,21 @@
         markers: this.serializeMarkers()
       };
     };
+
+
   };
 })();
-
-
-
+// Demo serialize and restore
+// setTimeout(function() {
+//   mapSpot.map.setZoom(16);
+// }, 1000);
+// serialized = mapSpot.serialize();
+// setTimeout(function() {
+//   mapSpot.deleteAllMarkers();
+// }, 2000);
+// setTimeout(function() {
+//   mapSpot.restoreMap(serialized);
+// }, 3000);
 
 (function() {
   window.mapDefaults = {
@@ -204,16 +247,18 @@ if (document.getElementById('map-page') !== null) {
 
   console.log("Markers");
   console.log(mapSpot.markers);
+}
 
-  // Demo serialize and restore
-  // setTimeout(function() {
-  //   mapSpot.map.setZoom(16);
-  // }, 1000);
-  // serialized = mapSpot.serialize();
-  // setTimeout(function() {
-  //   mapSpot.deleteAllMarkers();
-  // }, 2000);
-  // setTimeout(function() {
-  //   mapSpot.restoreMap(serialized);
-  // }, 3000);
+if (document.getElementById('edit-map-page') !== null) {
+  window.mapSpot = new MapSpot(mapDefaults.node, mapDefaults.inputNode, {
+    center: mapDefaults.markers[0]
+  });
+  mapSpot.initMap();
+  mapSpot.getMap();
+
+  console.log("Coordinates");
+  console.table(mapSpot.serializeMarkers());
+
+  console.log("Markers");
+  console.log(mapSpot.markers);
 }
