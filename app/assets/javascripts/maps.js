@@ -31,7 +31,7 @@
     this.addEventListeners = function() {
       let self = this;
       google.maps.event.addListener(this.map, "click", function(event) {
-        debugger
+
         self.addMarker(event.latLng);
       });
 
@@ -118,7 +118,10 @@
       return this.markers.map(function(marker) {
         return {
           lat: marker.position.lat(),
-          lng: marker.position.lng()
+          lng: marker.position.lng(),
+          name: marker.name,
+          address: marker.address,
+          tell: marker.tell
         };
       });
     };
@@ -145,18 +148,11 @@
       this.restoreMarkers(serialized.markers);
     };
 
-    // this.save will call serialize()
-    //   let button = document.getElementById("save-button");
-    //   button.addEventListener("click", function() {
-    //   console.log('it work', window.mapSpot.markers);
-    //   this.save()
-    // })
-
     this.save = function() {
       let self = this;
       let map = self.serialize();
-      map.title = "Yay Tokyo";
-      map.description = "Still here";
+      map.title = document.getElementById('title-field').value;
+      map.description = document.getElementById('description-field').value;
 
       fetch('/maps', {
         method: "post",
