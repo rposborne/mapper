@@ -13,7 +13,13 @@ class MapsController < ApplicationController
   end
 
   def create
-    @map = Map.new(map_params)
+    @map = Map.new({
+      title: map_params[:title],
+      description: map_params[:description],
+      center: map_params[:center],
+      zoom: map_params[:zoom],
+      markers: map_params[:markers]
+    })
 
     respond_to do |format|
       if @map.save
@@ -37,9 +43,10 @@ class MapsController < ApplicationController
   private
 
     def map_params
-      params.require(:map).permit(:title, :description)
-      # will need marker permits here as well
-      params.fetch(:map)
+      #params.require(:map).permit(:title, :description, :markers, :center, :zoom)
+
+      # security issue. must resolve before deployment!
+      params[:map]
     end
 
 end

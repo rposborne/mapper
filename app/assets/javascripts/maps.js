@@ -11,15 +11,15 @@
     this.node = node;
     this.inputNode = inputNode;
     this.markers = [];
+    this.openedMarker = null;
     this.map = new google.maps.Map(this.node);
     this.searchBox = new google.maps.places.SearchBox(this.inputNode);
     this.infowindow = new google.maps.InfoWindow({
-      content: document.getElementById('form')
+      content: document.getElementById('marker-form-wrapper')
     });
     this.messageWindow = new google.maps.InfoWindow({
       content: document.getElementById('message')
     });
-
 
     this.initMap = function() {
       this.map.setCenter(this.options["center"] || DEFAULT_CENTER);
@@ -31,6 +31,7 @@
     this.addEventListeners = function() {
       let self = this;
       google.maps.event.addListener(this.map, "click", function(event) {
+
         self.addMarker(event.latLng);
       });
 
@@ -46,8 +47,7 @@
             return;
           }
           // Create a marker for each place.
-          self.addMarker(place.geometry.location);
-          console.log(self.markers)
+          self.addMarker(place.geometry.location, place);
 
           if (place.geometry.viewport) {
             // Only geocodes have viewport.
@@ -62,26 +62,55 @@
       self.map.addListener("bounds_changed", function() {
         self.searchBox.setBounds(self.map.getBounds());
       });
+
+      document.getElementById('marker-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        self.openedMarker.name = this.name.value;
+        self.openedMarker.address = this.address.value;
+        self.openedMarker.tell = this.tell.value;
+
+        this.name.value = ""
+        this.address.value = ""
+        this.tell.value = ""
+
+        self.infowindow.close(self.map, self.openedMarker);
+        self.messageWindow.open(self.map, self.openedMarker)
+        setInterval(function() {
+          self.messageWindow.close(self.map, self.openedMarker)
+        }, 500)
+        document.getElementById('message').setAttribute("style", "display: block")
+        self.openedMarker = null;
+      })
     };
 
-    this.addMarker = function(latLng) {
+    this.addMarker = function(latLng, place) {
       let self = this;
       let marker = new google.maps.Marker({
         position: latLng,
         draggable: true,
         map: this.map
       });
+      marker.name = ""
+      marker.address = ""
+      marker.tell = ""
+
+      if (place !== undefined) {
+        marker.name = place.name;
+        marker.address = place.formatted_address;
+      }
+
       this.map.panTo(latLng);
       this.markers.push(marker);
 
       google.maps.event.addListener(marker, 'click', function() {
         self.infowindow.open(self.map, marker);
-        document.getElementById('form').setAttribute("style", "display: block")
-      })
-      document.getElementById('button').addEventListener('click', function() {
-        self.messageWindow.open(self.map, marker)
-        self.infowindow.close(self.map, marker);
-        document.getElementById('message').setAttribute("style", "display: block")
+        self.openedMarker = marker;
+        document.getElementById('marker-form-wrapper').setAttribute("style", "display: block")
+        let form = document.getElementById('marker-form');
+        form.name.value = marker.name;
+        form.address.value = marker.address;
+        form.tell.value = marker.tell;
       })
     };
 
@@ -89,7 +118,10 @@
       return this.markers.map(function(marker) {
         return {
           lat: marker.position.lat(),
-          lng: marker.position.lng()
+          lng: marker.position.lng(),
+          name: marker.name,
+          address: marker.address,
+          tell: marker.tell
         };
       });
     };
@@ -116,14 +148,12 @@
       this.restoreMarkers(serialized.markers);
     };
 
-    //this.save will call serialize()
-    let button = document.getElementById("save-button");
-    button.addEventListener("click", function() {
-      console.log('it work', window.mapSpot.markers);
-      this.save()
-    })
-
     this.save = function() {
+      let self = this;
+      let map = self.serialize();
+      map.title = document.getElementById('title-field').value;
+      map.description = document.getElementById('description-field').value;
+
       fetch('/maps', {
         method: "post",
         headers: {
@@ -131,7 +161,7 @@
           'Accept': 'application/json',
           'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
         },
-        body: JSON.stringify(window.mapSpot.markers[0].position)
+        body: JSON.stringify({ map: map })
       })
       .then(data => console.log(data))
     }
@@ -176,14 +206,14 @@ if (document.getElementById('map-page') !== null) {
   console.log(mapSpot.markers);
 
   // Demo serialize and restore
-  setTimeout(function() {
-    mapSpot.map.setZoom(16);
-  }, 1000);
-  serialized = mapSpot.serialize();
-  setTimeout(function() {
-    mapSpot.deleteAllMarkers();
-  }, 2000);
-  setTimeout(function() {
-    mapSpot.restoreMap(serialized);
-  }, 3000);
+  // setTimeout(function() {
+  //   mapSpot.map.setZoom(16);
+  // }, 1000);
+  // serialized = mapSpot.serialize();
+  // setTimeout(function() {
+  //   mapSpot.deleteAllMarkers();
+  // }, 2000);
+  // setTimeout(function() {
+  //   mapSpot.restoreMap(serialized);
+  // }, 3000);
 }
