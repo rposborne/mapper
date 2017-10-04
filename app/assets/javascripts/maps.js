@@ -153,7 +153,6 @@
     };
 
     this.save = function() {
-      console.log("Working?");
       let self = this;
       let map = self.serialize();
       map.title = document.getElementById('title-field').value;
@@ -181,8 +180,32 @@
         markers: this.serializeMarkers()
       };
     };
+
+    this.getMapById = function(id) {
+      fetch("/maps/`${id}`", {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          'Accept': 'application/json',
+          'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+        },
+        body: JSON.stringify({ map: map })
+      })
+      .then(data => console.log(data))
+    }
   };
 })();
+// Demo serialize and restore
+// setTimeout(function() {
+//   mapSpot.map.setZoom(16);
+// }, 1000);
+// serialized = mapSpot.serialize();
+// setTimeout(function() {
+//   mapSpot.deleteAllMarkers();
+// }, 2000);
+// setTimeout(function() {
+//   mapSpot.restoreMap(serialized);
+// }, 3000);
 
 (function() {
   window.mapDefaults = {
@@ -206,16 +229,20 @@ if (document.getElementById('map-page') !== null) {
 
   console.log("Markers");
   console.log(mapSpot.markers);
+}
 
-  // Demo serialize and restore
-  // setTimeout(function() {
-  //   mapSpot.map.setZoom(16);
-  // }, 1000);
-  // serialized = mapSpot.serialize();
-  // setTimeout(function() {
-  //   mapSpot.deleteAllMarkers();
-  // }, 2000);
-  // setTimeout(function() {
-  //   mapSpot.restoreMap(serialized);
-  // }, 3000);
+if (document.getElementById('edit-map-page') !== null) {
+  window.mapSpot = new MapSpot(mapDefaults.node, mapDefaults.inputNode, {
+    center: mapDefaults.markers[0]
+  });
+  mapSpot.initMap();
+
+  mapSpot.restoreMap(mapDefaults.serialized);
+
+  console.log("Coordinates");
+  console.table(mapSpot.serializeMarkers());
+
+  console.log("Markers");
+  console.log(mapSpot.markers);
+
 }

@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <%= csrf_meta_tags %>
+    <title>Edit Your Map!</title>
   </head>
-  <body id="map-page">
-    <h1>Where Would You Go?</h1>
+  <body id="edit-map-page">
     <form>
       <input id="pac-input" class="controls" type="text" placeholder="Search Box">
     </form>
@@ -14,7 +12,7 @@
     <form id="save-map-form">
       <input id="title-field" name="title">
       <input id="description-field" name="description">
-      <input id="save-button" value="Save Map" type="submit" />
+      <input id="save-button" value="Update Map" type="submit" />
     </form>
     <div id="marker-form-wrapper" style="display: none">
       <form id="marker-form">
@@ -25,7 +23,6 @@
         <tr><td></td><td><input type='submit' value='Save' /></td></tr>
       </table>
     </form>
-    </div>
-    <div id="message" style="display: none">Location saved</div>
+
   </body>
 </html>

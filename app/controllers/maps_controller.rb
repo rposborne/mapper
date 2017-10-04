@@ -10,6 +10,10 @@ class MapsController < ApplicationController
 
   def show
     @map = Map.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @map }
+    end
   end
 
   def create
@@ -34,6 +38,10 @@ class MapsController < ApplicationController
 
   def edit
     @map = Map.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @map }
+    end
   end
 
   def destroy
