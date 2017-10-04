@@ -3,7 +3,7 @@
 
 (function() {
   window.MapSpot = function(node, inputNode, options) {
-    const DEFAULT_CENTER = { lat: 35.65489, lng: 139.7226 };
+    const DEFAULT_CENTER = { lat: 38.898754, lng: -77.031563 };
     const DEFAULT_ZOOM = 17;
 
     this.options = options || {};
@@ -157,7 +157,6 @@
       return document.location.pathname.split("/")[2];
     }
 
-
     this.getMap = function() {
       let self = this;
       let mapId = this.getMapIdFromLocation();
@@ -227,7 +226,7 @@
 
 (function() {
   window.mapDefaults = {
-    markers: [{ lat: 35.65489, lng: 139.7226 }],
+    markers: [{ lat: 38.898754, lng: -77.031563 }],
     node: document.getElementById("map"),
     inputNode: document.getElementById("pac-input")
   };
@@ -238,15 +237,6 @@ if (document.getElementById('map-page') !== null) {
     center: mapDefaults.markers[0]
   });
   mapSpot.initMap();
-
-  mapSpot.restoreMarkers(mapDefaults.markers);
-  mapSpot.addMarker({ lat: 35.654376, lng: 139.722903 });
-
-  console.log("Coordinates");
-  console.table(mapSpot.serializeMarkers());
-
-  console.log("Markers");
-  console.log(mapSpot.markers);
 }
 
 if (document.getElementById('edit-map-page') !== null) {
