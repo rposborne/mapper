@@ -157,6 +157,7 @@
       return document.location.pathname.split("/")[2];
     }
 
+
     this.getMap = function() {
       let self = this;
       let mapId = this.getMapIdFromLocation();
@@ -169,10 +170,15 @@
         },
         // body: JSON.stringify({ map: map })
       })
-      .then(res => {
-        res.json()
-        .then((json) => console.log(json))
+      .then(function(res) {
+        if (res.ok) {
+          return res.json()
+        }
       })
+      .then(function(json) {
+        self.restoreMarkers(json.markers)
+         console.log(json)
+       })
     }
 
     this.save = function() {
@@ -249,13 +255,10 @@ if (document.getElementById('edit-map-page') !== null) {
   });
   mapSpot.initMap();
   mapSpot.getMap();
-  mapSpot.restoreMarkers(this.markers);
-
 
   console.log("Coordinates");
   console.table(mapSpot.serializeMarkers());
 
   console.log("Markers");
   console.log(mapSpot.markers);
-
 }
