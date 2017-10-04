@@ -144,13 +144,36 @@
       });
     };
 
-    this.restoreMap = function(serialized) {
+    this.restoreMap = function(data) {
       let self = this;
+
       this.deleteAllMarkers();
-      this.map.setCenter(serialized.center);
-      this.map.setZoom(serialized.zoom);
-      this.restoreMarkers(serialized.markers);
+      this.map.setCenter(data.center);
+      this.map.setZoom(data.zoom);
+      this.restoreMarkers(data.markers);
     };
+
+    this.getMapIdFromLocation = function() {
+      return document.location.pathname.split("/")[2];
+    }
+
+    this.getMap = function() {
+      let self = this;
+      let mapId = this.getMapIdFromLocation();
+      fetch(`/maps/${mapId}`, {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          'Accept': 'application/json',
+          'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+        },
+        // body: JSON.stringify({ map: map })
+      })
+      .then(res => {
+        res.json()
+        .then((json) => console.log(json))
+      })
+    }
 
     this.save = function() {
       let self = this;
@@ -181,18 +204,7 @@
       };
     };
 
-    this.getMapById = function(id) {
-      fetch("/maps/`${id}`", {
-        method: "get",
-        headers: {
-          "Content-Type": "application/json",
-          'Accept': 'application/json',
-          'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
-        },
-        body: JSON.stringify({ map: map })
-      })
-      .then(data => console.log(data))
-    }
+
   };
 })();
 // Demo serialize and restore
@@ -236,8 +248,9 @@ if (document.getElementById('edit-map-page') !== null) {
     center: mapDefaults.markers[0]
   });
   mapSpot.initMap();
+  mapSpot.getMap();
+  mapSpot.restoreMarkers(this.markers);
 
-  mapSpot.restoreMap(mapDefaults.serialized);
 
   console.log("Coordinates");
   console.table(mapSpot.serializeMarkers());
