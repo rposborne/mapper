@@ -34,6 +34,10 @@
 
         self.addMarker(event.latLng);
       });
+      document.getElementById('save-map-form').addEventListener('submit', function(e) {
+        e.preventDefault()
+        self.save()
+      })
 
       self.searchBox.addListener("places_changed", function() {
         let places = self.searchBox.getPlaces();
@@ -149,6 +153,7 @@
     };
 
     this.save = function() {
+      console.log("Working?");
       let self = this;
       let map = self.serialize();
       map.title = document.getElementById('title-field').value;
@@ -178,9 +183,6 @@
     };
   };
 })();
-
-
-
 
 (function() {
   window.mapDefaults = {
