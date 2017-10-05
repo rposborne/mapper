@@ -28,21 +28,6 @@
       this.addEventListeners();
     };
 
-    // this.initEditMap = function() {
-    //   this.map.setCenter(this.options["center"] || DEFAULT_CENTER);
-    //   this.map.setZoom(this.options["zoom"] || DEFAULT_ZOOM);
-    //   this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.inputNode);
-    //   this.editEventListeners();
-    // }
-    //
-    // this.editEventListeners = function() {
-    //   let self = this;
-    //   google.maps.event.addListener(this.map, "click", function(event) {
-    //
-    //     self.addMarker(event.latLng);
-    //   });
-    // }
-
     this.addEventListeners = function() {
       let self = this;
       google.maps.event.addListener(this.map, "click", function(event) {
@@ -310,12 +295,6 @@ if (document.getElementById('save-map-page') !== null) {
   });
   mapSpot.initMap();
   mapSpot.getMap();
-
-  console.log("Coordinates");
-  console.table(mapSpot.serializeMarkers());
-
-  console.log("Markers");
-  console.log(mapSpot.markers);
 }
 
 if (document.getElementById('save-map-page') !== null) {
