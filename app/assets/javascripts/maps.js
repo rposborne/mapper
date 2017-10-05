@@ -31,19 +31,34 @@
     this.addEventListeners = function() {
       let self = this;
       google.maps.event.addListener(this.map, "click", function(event) {
+        let marker = {
+          lat: event.latLng.lat(),
+          lng: event.latLng.lng(),
+          name: "",
+          address: "",
+          tell: ""
+        }
 
-        self.addMarker(event.latLng);
+        self.addMarker(marker);
       });
 
-      document.getElementById('delete-marker').addEventListener('button', function(e) {
-        e.preventDefault()
-        self.deleteMarker()
-      })
+      // document.getElementById('delete-marker').addEventListener('click', function() {
+      //   self.deleteMarker()
+      // })
 
-      document.getElementById('save-map-form').addEventListener('submit', function(e) {
-        e.preventDefault()
-        self.save()
-      })
+      if (document.getElementById('save-map-form')) {
+        document.getElementById('save-map-form').addEventListener('submit', function(e) {
+          e.preventDefault()
+          self.save()
+        })
+      }
+
+      if (document.getElementById('edit-map-form')) {
+        document.getElementById('edit-map-form').addEventListener('submit', function(e) {
+          e.preventDefault()
+          self.edit()
+        })
+      }
 
       self.searchBox.addListener("places_changed", function() {
         let places = self.searchBox.getPlaces();
@@ -57,6 +72,13 @@
             return;
           }
           // Create a marker for each place.
+          let marker = {
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng(),
+            name: "",
+            address: "",
+            tell: ""
+          }
           self.addMarker(place.geometry.location, place);
 
           if (place.geometry.viewport) {
@@ -94,16 +116,17 @@
       })
     };
 
-    this.addMarker = function(latLng, place) {
+    this.addMarker = function(markerData, place) {
       let self = this;
+      let latLng = {lat: markerData.lat, lng: markerData.lng}
       let marker = new google.maps.Marker({
         position: latLng,
         draggable: true,
         map: this.map
       });
-      marker.name = ""
-      marker.address = ""
-      marker.tell = ""
+      marker.name = markerData.name || "";
+      marker.address = markerData.address || "";
+      marker.tell = markerData.tell || "";
 
       if (place !== undefined) {
         marker.name = place.name;
@@ -182,7 +205,6 @@
           'Accept': 'application/json',
           'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
         },
-        // body: JSON.stringify({ map: map })
       })
       .then(function(res) {
         if (res.ok) {
@@ -210,6 +232,32 @@
         },
         body: JSON.stringify({ map: map })
       })
+        .then(function(res) {
+          if (res.ok) {
+            return res.json()
+          }
+        })
+        .then(function(json) {
+          window.location.href = json["redirect_to"]
+         })
+    }
+
+    this.edit = function() {
+      let self = this;
+      let mapId = this.getMapIdFromLocation();
+      let map = self.serialize();
+      map.title = document.getElementById('title-field').value;
+      map.description = document.getElementById('description-field').value;
+
+      fetch(`/maps/${mapId}`, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+          'Accept': 'application/json',
+          'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+        },
+        body: JSON.stringify({ map: map })
+      })
       .then(data => console.log(data))
     }
 
@@ -223,21 +271,8 @@
         markers: this.serializeMarkers()
       };
     };
-
-
   };
 })();
-// Demo serialize and restore
-// setTimeout(function() {
-//   mapSpot.map.setZoom(16);
-// }, 1000);
-// serialized = mapSpot.serialize();
-// setTimeout(function() {
-//   mapSpot.deleteAllMarkers();
-// }, 2000);
-// setTimeout(function() {
-//   mapSpot.restoreMap(serialized);
-// }, 3000);
 
 (function() {
   window.mapDefaults = {
@@ -254,16 +289,34 @@ if (document.getElementById('map-page') !== null) {
   mapSpot.initMap();
 }
 
+if (document.getElementById('save-map-page') !== null) {
+  window.mapSpot = new MapSpot(mapDefaults.node, mapDefaults.inputNode, {
+    center: mapDefaults.markers[0]
+  });
+  mapSpot.initMap();
+  mapSpot.getMap();
+}
+
+if (document.getElementById('save-map-page') !== null) {
+  window.mapSpot = new MapSpot(mapDefaults.node, mapDefaults.inputNode, {
+    center: mapDefaults.markers[0]
+  });
+  mapSpot.initMap();
+  mapSpot.getMap();
+}
+
+if (document.getElementById('show-map-page') !== null) {
+  window.mapSpot = new MapSpot(mapDefaults.node, mapDefaults.inputNode, {
+    center: mapDefaults.markers[0]
+  });
+  mapSpot.initMap();
+  mapSpot.getMap();
+}
+
 if (document.getElementById('edit-map-page') !== null) {
   window.mapSpot = new MapSpot(mapDefaults.node, mapDefaults.inputNode, {
     center: mapDefaults.markers[0]
   });
   mapSpot.initMap();
   mapSpot.getMap();
-
-  console.log("Coordinates");
-  console.table(mapSpot.serializeMarkers());
-
-  console.log("Markers");
-  console.log(mapSpot.markers);
 }
