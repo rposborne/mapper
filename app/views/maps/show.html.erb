@@ -5,12 +5,11 @@
     <title></title>
   </head>
   <body id="show-map-page">
+    <div id="show_map">
     <h1><%= @map.title %></h1>
-    <span><%= link_to "YOUR MAPS", maps_path %></span>
-    <span><%= link_to "HOME", root_path %></span>
     <div id="map"></div>
     <form id="show-map-form">
-      <%= @map.description %>
+    <span id="about_map"> About this map:  <%= @map.description %> </span>
     </form>
     <div id="marker-form-wrapper" style="display: none">
       <form id="marker-form">
@@ -21,5 +20,6 @@
         </table>
     </form>
   </div>
+</div>
   </body>
 </html>
