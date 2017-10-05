@@ -2,6 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+
 .navbar-text {
   margin: 0px;
   padding: 15px;
@@ -24,7 +25,8 @@
 
 .navbar-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
 }
 
 
@@ -32,16 +34,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   h1 {
     font-size: 10vh;
-  }
-
-  span {
-    font-family: Roboto Slab;
-  }
-  .welcome-about {
-    margin-left: 60px;
-    margin-right: 60px;
   }
 }
