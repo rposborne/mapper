@@ -19,8 +19,8 @@
       <!-- Logged in as <br> <span><%= current_user.email %></span>. -->
       <div class='navbar-text'>
         <%= link_to "Home", root_path %>
-        <%=link_to "Explore", new_map_path %>
-        <%= link_to "Your Maps", maps_path %>
+        <%=link_to "Create a Map", new_map_path %>
+        <%= link_to "Explore Your Maps", maps_path %>
       <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
     </div>
     <% else %>

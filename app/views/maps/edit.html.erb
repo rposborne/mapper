@@ -5,15 +5,18 @@
     <title>Edit Your Map!</title>
   </head>
   <body id="edit-map-page">
-    <span><%= link_to "YOUR MAPS", maps_path %></span>
-    <span><%= link_to "HOME", root_path %></span>
+  <div class="edit-map-page">
+    <h2> <%= @map.title %> </h2>
     <form>
       <input id="pac-input" class="controls" type="text" placeholder="Search Box">
     </form>
     <div id="map"></div>
     <form id="edit-map-form">
-      <input id="title-field" name="title">
-      <input id="description-field" name="description">
+      <span id='create-map'> Edit Map </span>
+      <label> Map Name: </label>
+      <input id="title-field" name="title" value="<%= @map.title %>">
+      <label> Description: </label>
+      <input id="description-field" name="description" value="<%= @map.description %>">
       <input id="edit-button" value="Update Map" type="submit" />
     </form>
     <div id="marker-form-wrapper" style="display: none">
@@ -26,5 +29,6 @@
       </table>
     </form>
     <div id="message" style="display: none">Location saved</div>
+  </div>
   </body>
 </html>
