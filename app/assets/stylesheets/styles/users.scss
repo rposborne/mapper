@@ -46,10 +46,12 @@
 
     .field {
       #user_email {
-        background-color: rgba(53,74,93,0.7) !important;
+        background-color: white !important;
+      }
+      #user_password {
+        background-color: white !important;
       }
     }
-
 
     input {
       outline: none;
@@ -61,11 +63,13 @@
     em {
       font-size: 12px;
     }
+
+    .actions {
+      input {
+        background-color: rgba(53,74,93,0.7);
+      }
+    }
   }
-
-
-
-
 
   .already {
     a {
