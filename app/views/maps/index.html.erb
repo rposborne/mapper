@@ -5,23 +5,19 @@
     <title>Check Out Your Maps!</title>
   </head>
   <body>
-    <table>
-      <thead>
-        <tr>
-          <th id="table-headers">Map Name</th>
-      </thead>
-      <tbody>
-        <% @maps.each do |map| %>
-          <tr class="map-body">
-            <td><%= map.title %></td>
-            <td class="button"><%= link_to 'Show', map %></td>
-            <td class='button'><%= link_to 'Edit', edit_map_path(map) %></td>
-            <td class="button"><%= link_to 'Destroy', map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          </tr>
-          <% end %>
-      </tbody>
-    </table>
+  <div class="map-index-page">
+  <% @maps.each do |map| %>
+    <div class="map-body">
+      <span id='map-title'><%= map.title %></span>
+      <img src='https://maps.googleapis.com/maps/api/staticmap?center=<%= map.center["lat"] %>,<%= map.center["lng"] %>&zoom=13&size=600x300&maptype=roadmap&key=<%= ENV["GOOGLE_MAPS_API_KEY"] %>'>
+      <div id='index-links'>
+      <%= link_to 'View', map %>
+      <%= link_to 'Edit', edit_map_path(map) %>
+      <%= link_to 'Delete', map, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </div>
+    </div>
+    <% end %>
     <br>
-    <span><%= link_to "HOME", root_path %></span>
+  </div>
   </body>
 </html>
