@@ -77,8 +77,6 @@ class MapsController < ApplicationController
 
     def map_params
       #params.require(:map).permit(:title, :description, :markers, :center, :zoom)
-
-      # security issue. must resolve before deployment!
       params[:map]
     end
 
