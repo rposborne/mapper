@@ -76,8 +76,8 @@ class MapsController < ApplicationController
   private
 
     def map_params
-      #params.require(:map).permit(:title, :description, :markers, :center, :zoom)
-      params[:map]
+      data_keys = params[:map].try(:fetch, :data, {}).keys
+      params.require(:map).permit(res: data_keys)
     end
 
 end
