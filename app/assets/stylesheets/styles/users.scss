@@ -29,7 +29,7 @@
 .log_in_page {
   display: flex;
   margin: 20px 150px 20px 150px;
-  justify-content: space-between;
+  justify-content: space-around;
 
   #log_in_left {
     flex-basis: 30em;
@@ -41,17 +41,29 @@
     padding: 10px;
     // border-radius: 5px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    width: 300px;
+
+
+    .field {
+      #user_email {
+        background-color: rgba(53,74,93,0.7) !important;
+      }
+    }
+
+
+    input {
+      outline: none;
+      border: 1px solid rgb(53,74,93);
+      background-color: rgb(53,74,93);
+      width: 200px;
+    }
 
     em {
       font-size: 12px;
     }
   }
 
-  input {
-    outline: none;
-    width: 200px;
-    border: 1px solid rgb(53,74,93);
-  }
+
 
 
 
