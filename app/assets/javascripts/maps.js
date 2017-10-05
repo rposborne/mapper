@@ -209,6 +209,7 @@
       let mapId = this.getMapIdFromLocation();
       fetch(`/maps/${mapId}`, {
         method: "get",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           'Accept': 'application/json',
@@ -234,6 +235,7 @@
 
       fetch('/maps', {
         method: "post",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           'Accept': 'application/json',
@@ -260,6 +262,7 @@
 
       fetch(`/maps/${mapId}`, {
         method: "put",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           'Accept': 'application/json',
