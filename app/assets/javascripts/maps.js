@@ -30,17 +30,19 @@
 
     this.addEventListeners = function() {
       let self = this;
-      google.maps.event.addListener(this.map, "click", function(event) {
-        let marker = {
-          lat: event.latLng.lat(),
-          lng: event.latLng.lng(),
-          name: "",
-          address: "",
-          tell: ""
-        }
 
-        self.addMarker(marker);
-      });
+      if ((document.getElementById('save-map-form')) || document.getElementById('edit-map-form')) {
+        google.maps.event.addListener(this.map, "click", function(event) {
+          let marker = {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng(),
+            name: "",
+            address: "",
+            tell: ""
+          }
+          self.addMarker(marker);
+        });
+      }
 
       // document.getElementById('delete-marker').addEventListener('click', function() {
       //   self.deleteMarker()
@@ -48,6 +50,13 @@
 
       if (document.getElementById('save-map-form')) {
         document.getElementById('save-map-form').addEventListener('submit', function(e) {
+          e.preventDefault()
+          self.save()
+        })
+      }
+
+      if (document.getElementById('show-map-form')) {
+        document.getElementById('show-map-form').addEventListener('submit', function(e) {
           e.preventDefault()
           self.save()
         })
