@@ -3,7 +3,8 @@
   <head>
     <title>MapperSpot</title>
 
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmmnDCErIvgWlm30ynR42RILU5fXfbUYw&libraries=places"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV["GOOGLE_MAPS_API_KEY"] %>&libraries=places"
+  ></script>
 
     <%= csrf_meta_tags %>
 
