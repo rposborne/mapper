@@ -27,8 +27,8 @@ class MapsController < ApplicationController
 
     respond_to do |format|
       if @map.save
-        format.html { redirect_to @map, notice: 'Map was successfully saved'}
-        format.json { render json: @map }
+        format.html { redirect_to @map, notice: 'Map was successfully saved.'}
+        format.json { render json: {redirect_to: map_path(@map)}, status: :created }
       else
         format.html { render 'new' }
         format.json { render json: @map.errors, status: :unproccessable_entity }
@@ -56,9 +56,9 @@ class MapsController < ApplicationController
     })
 
     respond_to do |format|
-      if updated
-        format.html { redirect_to @map, notice: 'Map was successfully saved'}
-        format.json { render json: @map }
+      if @map.save
+        format.html { redirect_to @map, notice: 'Map was successfully updated.'}
+        format.json { render json: {redirect_to: map_path(@map)}, status: :created }
       else
         format.html { render 'new' }
         format.json { render json: @map.errors, status: :unproccessable_entity }

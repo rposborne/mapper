@@ -247,7 +247,14 @@
         },
         body: JSON.stringify({ map: map })
       })
-      .then(data => console.log(data))
+        .then(function(res) {
+          if (res.ok) {
+            return res.json()
+          }
+        })
+        .then(function(json) {
+          window.location.href = json["redirect_to"]
+         })
     }
 
     this.edit = function() {
