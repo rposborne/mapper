@@ -45,7 +45,10 @@ class MapsController < ApplicationController
   end
 
   def destroy
-
+    @map = Map.destroy(params[:id])
+    respond_to do |format|
+      format.html { redirect_to maps_path }
+    end
   end
 
   private

@@ -1,9 +1,22 @@
-
-<h2>Your Map</h2>
-
-
-
-
-
-<%= link_to 'Create a New Map', map_path %>
-<%= link_to "View Your Maps", maps_path %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body id="edit-map-page">
+    <span><%= link_to "YOUR MAPS", maps_path %></span>
+    <span><%= link_to "HOME", root_path %></span>
+    <div id="map"></div>
+    <form id="save-map-form">
+    </form>
+    <div id="marker-form-wrapper" style="display: none">
+      <form id="marker-form">
+      <table>
+        <tr><td>Name:</td> <td><input type='text' name='name'> </td></tr>
+        <tr><td>Address:</td> <td><input type='text' name='address'> </td> </tr>
+        <tr><td>Tell Us More:</td> <td><input type='text' name='tell'> </td></tr>
+      </table>
+    </form>
+  </body>
+</html>
