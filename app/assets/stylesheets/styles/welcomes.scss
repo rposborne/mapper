@@ -7,7 +7,6 @@
   padding: 15px;
   display: flex;
   justify-content: space-around;
-  // background-color: rgb(53,74,93);
 
     a {
     font-size: 20px;
@@ -18,15 +17,10 @@
 
     &:hover {
       border-bottom: 4px solid rgb(53,74,93);
-      background-color: rgba(53,74,93,0.9);
     }
   }
 }
 
-.user-logged-in {
-  margin: 10px;
-
-}
 
 .navbar-container {
   display: flex;
@@ -46,19 +40,4 @@
   span {
     font-family: Roboto Slab;
   }
-}
-
-.globe {
-  margin: 20px;
-  font-size: 40px;
-		-webkit-animation: rotation 10s infinite linear;
-}
-
-@-webkit-keyframes rotation {
-		from {
-				-webkit-transform: rotate(0deg);
-		}
-		to {
-				-webkit-transform: rotate(360deg);
-		}
 }

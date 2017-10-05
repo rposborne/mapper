@@ -1,0 +1,32 @@
+<div class='log_in_page'>
+<section id="log_in_left">
+<h2 id="log_in">Log in</h2>
+<span class="globe">🌏</span>
+</section>
+
+<section id="log_in_form">
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
+
+  <% if devise_mapping.rememberable? -%>
+    <div class="field">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me %>
+    </div>
+  <% end -%>
+
+  <div class="actions">
+    <%= f.submit "Log in" %>
+  </div>
+<% end %>
+<div class='already'> <%= render "devise/shared/links" %> </div>
+</section>
+</div>
