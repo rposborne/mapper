@@ -14,6 +14,7 @@
         <% @maps.each do |map| %>
           <tr class="map-body">
             <td><%= map.title %></td>
+            <td class="button"><%= link_to 'Show', map %></td>
             <td class='button'><%= link_to 'Edit', edit_map_path(map) %></td>
             <td class="button"><%= link_to 'Destroy', map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>

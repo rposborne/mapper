@@ -34,6 +34,12 @@
 
         self.addMarker(event.latLng);
       });
+
+      document.getElementById('delete-marker').addEventListener('button', function(e) {
+        e.preventDefault()
+        self.deleteMarker()
+      })
+
       document.getElementById('save-map-form').addEventListener('submit', function(e) {
         e.preventDefault()
         self.save()
@@ -117,6 +123,15 @@
         form.tell.value = marker.tell;
       })
     };
+
+    this.deleteMarker = function(latLng, place) {
+      let self = this;
+      index = this.markers.indexOf(marker)
+        if (index > -1) {
+      this.markers.splice(index, 1)
+      console.log(markers);
+      }
+    }
 
     this.serializeMarkers = function() {
       return this.markers.map(function(marker) {
