@@ -4,15 +4,32 @@
 
 /* Always set the map height explicitly to define the size of the div
  * element that contains the map. */
+
+.welcome-page {
+  background: url('./sg-map.jpg');
+  background-size: cover;
+}
+
 #map {
   height: 400px;
-  width: 700px;
+  width: 660px;
+  border: 5px solid rgb(53,74,93);
+  border-bottom: none;
+  // margin: 10px;
+  // box-shadow: -1px 20px 50px -20px rgba(0,0,0,0.75);
 }
 /* Optional: Makes the sample page fill the window. */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  background-color: rgba(255, 255, 255, 0.6);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
 }
 #description {
   font-family: Roboto;

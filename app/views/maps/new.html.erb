@@ -5,15 +5,18 @@
     <meta charset="utf-8">
     <%= csrf_meta_tags %>
   </head>
-  <body id="map-page">
-    <h1>Where Would You Go?</h1>
+  <body>
+    <section id="map-page">
+    <h1 id="where-would-you-go">Where Would You Go?</h1>
     <span><%= link_to "YOUR MAPS", maps_path %></span><span><%= link_to "HOME", root_path %></span>
     <form>
       <input id="pac-input" class="controls" type="text" placeholder="Search Box">
     </form>
     <div id="map"></div>
     <form id="save-map-form">
+      <label> Map Name: </label>
       <input id="title-field" name="title">
+      <label> Map Notes: </label>
       <input id="description-field" name="description">
       <input id="save-button" value="Save Map" type="submit" />
     </form>
@@ -28,5 +31,6 @@
     </form>
     </div>
     <div id="message" style="display: none">Location saved</div>
+    <section>
   </body>
 </html>

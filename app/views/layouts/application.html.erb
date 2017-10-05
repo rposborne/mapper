@@ -16,9 +16,11 @@
   <body>
     <p class='user-logged-in'>
       <% if user_signed_in? %>
-      Logged in as <br> <span><%= current_user.email %></span>.
+      <!-- Logged in as <br> <span><%= current_user.email %></span>. -->
       <div class='navbar-text'>
-      <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %>
+        <%=link_to "Explore", new_map_path %>
+        <%= link_to "Your Maps", maps_path %>
+      <%= link_to 'Edit Profile', edit_user_registration_path, :class => 'navbar-link' %>
       <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
     </div>
     <% else %>
