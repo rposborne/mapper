@@ -9,7 +9,7 @@
   <% @maps.each do |map| %>
     <div class="map-body">
       <span id='map-title'><%= map.title %></span>
-      <img src='https://maps.googleapis.com/maps/api/staticmap?center=<%= map.center["lat"] %>,<%= map.center["lng"] %>&zoom=13&size=600x300&maptype=roadmap&key=<%= ENV["GOOGLE_MAPS_API_KEY"] %>'>
+      <img src='https://maps.googleapis.com/maps/api/staticmap?center=<%= map.center["lat"] %>,<%= map.center["lng"] %>&zoom=13&size=600x300&maptype=roadmap'>
       <div id='index-links'>
       <%= link_to 'View', map %>
       <%= link_to 'Edit', edit_map_path(map) %>
