@@ -13,7 +13,11 @@
     this.markers = [];
     this.openedMarker = null;
     this.map = new google.maps.Map(this.node);
-    this.searchBox = new google.maps.places.SearchBox(this.inputNode);
+    if ((document.getElementById('save-map-form')) || document.getElementById('edit-map-form')) {
+      this.searchBox = new google.maps.places.SearchBox(this.inputNode);
+    } else {
+      this.searchBox = null;
+    }
     this.infowindow = new google.maps.InfoWindow({
       content: document.getElementById('marker-form-wrapper')
     });
@@ -42,6 +46,42 @@
           }
           self.addMarker(marker);
         });
+
+        self.searchBox.addListener("places_changed", function() {
+          let places = self.searchBox.getPlaces();
+          if (places.length == 0) {
+            return;
+          }
+
+          let bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              return;
+            }
+
+            let marker = {
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng(),
+              name: "",
+              address: "",
+              tell: ""
+            }
+
+            self.addMarker(marker, place);
+
+            if (place.geometry.viewport) {
+
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          });
+          self.map.fitBounds(bounds);
+        });
+
+        self.map.addListener("bounds_changed", function() {
+          self.searchBox.setBounds(self.map.getBounds());
+        });
       }
 
       if (document.getElementById('save-map-form')) {
@@ -61,45 +101,11 @@
       if (document.getElementById('edit-map-form')) {
         document.getElementById('edit-map-form').addEventListener('submit', function(e) {
           e.preventDefault()
-          self.edit()
+          self.update()
         })
       }
 
-      self.searchBox.addListener("places_changed", function() {
-        let places = self.searchBox.getPlaces();
-        if (places.length == 0) {
-          return;
-        }
 
-        let bounds = new google.maps.LatLngBounds();
-        places.forEach(function(place) {
-          if (!place.geometry) {
-            return;
-          }
-
-          let marker = {
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng(),
-            name: "",
-            address: "",
-            tell: ""
-          }
-
-          self.addMarker(marker, place);
-
-          if (place.geometry.viewport) {
-
-            bounds.union(place.geometry.viewport);
-          } else {
-            bounds.extend(place.geometry.location);
-          }
-        });
-        self.map.fitBounds(bounds);
-      });
-
-      self.map.addListener("bounds_changed", function() {
-        self.searchBox.setBounds(self.map.getBounds());
-      });
 
       document.getElementById('marker-form').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -158,7 +164,6 @@
       index = this.markers.indexOf(marker)
         if (index > -1) {
       this.markers.splice(index, 1)
-      console.log(markers);
       }
     }
 
@@ -219,8 +224,7 @@
         }
       })
       .then(function(json) {
-        self.restoreMarkers(json.markers)
-         console.log(json)
+        self.restoreMap(json)
        })
     }
 
@@ -250,7 +254,7 @@
          })
     }
 
-    this.edit = function() {
+    this.update = function() {
       let self = this;
       let mapId = this.getMapIdFromLocation();
       let map = self.serialize();
@@ -267,7 +271,14 @@
         },
         body: JSON.stringify({ map: map })
       })
-      .then(data => console.log(data))
+      .then(function(res) {
+        if (res.ok) {
+          return res.json()
+        }
+      })
+      .then(function(json) {
+        window.location.href = json["redirect_to"]
+       })
     }
 
     this.serialize = function() {

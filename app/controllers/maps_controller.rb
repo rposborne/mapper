@@ -28,7 +28,7 @@ class MapsController < ApplicationController
     respond_to do |format|
       if @map.save
         format.html { redirect_to @map, notice: 'Map was successfully saved.'}
-        format.json { render json: {redirect_to: map_path(@map)}, status: :created }
+        format.json { render json: {redirect_to: map_path(@map)}, status: :ok }
       else
         format.html { render 'new' }
         format.json { render json: @map.errors, status: :unproccessable_entity }
@@ -56,9 +56,9 @@ class MapsController < ApplicationController
     })
 
     respond_to do |format|
-      if @map.save
+      if updated
         format.html { redirect_to @map, notice: 'Map was successfully updated.'}
-        format.json { render json: {redirect_to: map_path(@map)}, status: :created }
+        format.json { render json: {redirect_to: map_path(@map)}, status: :ok }
       else
         format.html { render 'new' }
         format.json { render json: @map.errors, status: :unproccessable_entity }
@@ -76,8 +76,15 @@ class MapsController < ApplicationController
   private
 
     def map_params
-      #params.require(:map).permit(:title, :description, :markers, :center, :zoom)
-      params[:map]
+      params
+      .require(:map)
+      .permit(
+        :title,
+        :description,
+        :zoom,
+        :center => [:lat, :lng],
+        :markers => [:lat, :lng, :name, :address, :tell]
+      )
     end
 
 end
