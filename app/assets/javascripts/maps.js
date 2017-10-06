@@ -44,10 +44,6 @@
         });
       }
 
-      // document.getElementById('delete-marker').addEventListener('click', function() {
-      //   self.deleteMarker()
-      // })
-
       if (document.getElementById('save-map-form')) {
         document.getElementById('save-map-form').addEventListener('submit', function(e) {
           e.preventDefault()
@@ -80,7 +76,7 @@
           if (!place.geometry) {
             return;
           }
-          // Create a marker for each place.
+
           let marker = {
             lat: place.geometry.location.lat(),
             lng: place.geometry.location.lng(),
@@ -88,10 +84,11 @@
             address: "",
             tell: ""
           }
-          self.addMarker(place.geometry.location, place);
+
+          self.addMarker(marker, place);
 
           if (place.geometry.viewport) {
-            // Only geocodes have viewport.
+
             bounds.union(place.geometry.viewport);
           } else {
             bounds.extend(place.geometry.location);
