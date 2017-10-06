@@ -1,24 +1,19 @@
-# README
+# Mapper
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Mapper is a map-sharing web application created by two travel-enthusiasts looking for a better way to share their favorite places and experiences with friends.
 
-Things you may want to cover:
+This app allows users to create their own maps of any location in the world, pin customized markers, and share with other users.
 
-* Ruby version
+## Requirements
 
-* System dependencies
+* Ruby 2.4+
 
-* Configuration
+## Configuration
 
-* Database creation
+Use the `.env.sample` file as an example for the configuration.
 
-* Database initialization
+```
+cp .env.sample .env
+```
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Edit `.env` with your credentials.
