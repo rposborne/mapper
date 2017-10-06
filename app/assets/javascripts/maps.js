@@ -13,7 +13,11 @@
     this.markers = [];
     this.openedMarker = null;
     this.map = new google.maps.Map(this.node);
-    this.searchBox = new google.maps.places.SearchBox(this.inputNode);
+    if ((document.getElementById('save-map-form')) || document.getElementById('edit-map-form')) {
+      this.searchBox = new google.maps.places.SearchBox(this.inputNode);
+    } else {
+      this.searchBox = null;
+    }
     this.infowindow = new google.maps.InfoWindow({
       content: document.getElementById('marker-form-wrapper')
     });
@@ -65,40 +69,42 @@
         })
       }
 
-      self.searchBox.addListener("places_changed", function() {
-        let places = self.searchBox.getPlaces();
-        if (places.length == 0) {
-          return;
-        }
-
-        let bounds = new google.maps.LatLngBounds();
-        places.forEach(function(place) {
-          if (!place.geometry) {
+      if ((document.getElementById('save-map-form')) || document.getElementById('edit-map-form')) {
+        self.searchBox.addListener("places_changed", function() {
+          let places = self.searchBox.getPlaces();
+          if (places.length == 0) {
             return;
           }
 
-          let marker = {
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng(),
-            name: "",
-            address: "",
-            tell: ""
-          }
-          self.addMarker(place.geometry.location, place);
+          let bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              return;
+            }
 
-          if (place.geometry.viewport) {
+            let marker = {
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng(),
+              name: "",
+              address: "",
+              tell: ""
+            }
+            self.addMarker(place.geometry.location, place);
 
-            bounds.union(place.geometry.viewport);
-          } else {
-            bounds.extend(place.geometry.location);
-          }
+            if (place.geometry.viewport) {
+
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          });
+          self.map.fitBounds(bounds);
         });
-        self.map.fitBounds(bounds);
-      });
 
-      self.map.addListener("bounds_changed", function() {
-        self.searchBox.setBounds(self.map.getBounds());
-      });
+        self.map.addListener("bounds_changed", function() {
+          self.searchBox.setBounds(self.map.getBounds());
+        });
+      }
 
       document.getElementById('marker-form').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -218,8 +224,7 @@
         }
       })
       .then(function(json) {
-         self.restoreMarkers(json.markers)
-         console.log(json)
+         self.restoreMap(json)
        })
     }
 
