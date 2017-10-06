@@ -44,10 +44,6 @@
         });
       }
 
-      // document.getElementById('delete-marker').addEventListener('click', function() {
-      //   self.deleteMarker()
-      // })
-
       if (document.getElementById('save-map-form')) {
         document.getElementById('save-map-form').addEventListener('submit', function(e) {
           e.preventDefault()
@@ -65,7 +61,7 @@
       if (document.getElementById('edit-map-form')) {
         document.getElementById('edit-map-form').addEventListener('submit', function(e) {
           e.preventDefault()
-          self.edit()
+          self.update()
         })
       }
 
@@ -80,7 +76,7 @@
           if (!place.geometry) {
             return;
           }
-          // Create a marker for each place.
+
           let marker = {
             lat: place.geometry.location.lat(),
             lng: place.geometry.location.lng(),
@@ -91,7 +87,7 @@
           self.addMarker(place.geometry.location, place);
 
           if (place.geometry.viewport) {
-            // Only geocodes have viewport.
+
             bounds.union(place.geometry.viewport);
           } else {
             bounds.extend(place.geometry.location);
@@ -222,7 +218,7 @@
         }
       })
       .then(function(json) {
-        self.restoreMarkers(json.markers)
+         self.restoreMarkers(json.markers)
          console.log(json)
        })
     }
@@ -253,7 +249,7 @@
          })
     }
 
-    this.edit = function() {
+    this.update = function() {
       let self = this;
       let mapId = this.getMapIdFromLocation();
       let map = self.serialize();
@@ -270,7 +266,14 @@
         },
         body: JSON.stringify({ map: map })
       })
-      .then(data => console.log(data))
+      .then(function(res) {
+        if (res.ok) {
+          return res.json()
+        }
+      })
+      .then(function(json) {
+        window.location.href = json["redirect_to"]
+       })
     }
 
     this.serialize = function() {
