@@ -8,6 +8,17 @@ This app allows users to create their own maps of any location in the world, pin
 
 * Ruby 2.4+
 
+## Tools Used
+
+* Ruby-on-Rail (v. 5.1.4)
+* Sass
+* Javascript
+* PostgreSQL
+* ActiveRecord
+* Devise Authentication
+* GoogleMaps API
+* Google 'Places' Library
+
 ## Configuration
 
 Use the `.env.sample` file as an example for the configuration.
