@@ -51,5 +51,3 @@ import MapSpot from './map_spot'
 
 
 })();
-
-export default MapSpot;
