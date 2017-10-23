@@ -1,5 +1,10 @@
 {
   "name": "mapper_spot",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "@rails/webpacker": "^3.0.2"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^2.9.3"
+  }
 }
