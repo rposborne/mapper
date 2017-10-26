@@ -4,8 +4,6 @@ Mapper is a map-sharing web application created by two travel-enthusiasts lookin
 
 This app allows users to create their own maps of any location in the world, pin customized markers, and share with other users.
 
-Live demo [here](https://calm-dusk-90330.herokuapp.com/).
-
 ## Requirements
 
 * Ruby 2.4+
